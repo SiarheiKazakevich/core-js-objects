@@ -131,8 +131,31 @@ function makeImmutable(obj) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+function makeWord(lettersObject) {
+  // Проверяем, что все индексы числовые и положительные
+  const maxIndex = Math.max(
+    ...Object.values(lettersObject)
+      .flat()
+      .filter((index) => Number.isInteger(index) && index >= 0)
+  );
+
+  // Если maxIndex не найден, возвращаем пустую строку
+  if (maxIndex === -Infinity) return '';
+
+  // Создаем массив нужной длины
+  const wordArray = new Array(maxIndex + 1);
+
+  // Перебираем объект и заполняем массив по индексам
+  Object.entries(lettersObject).forEach(([letter, positions]) => {
+    positions.forEach((index) => {
+      if (Number.isInteger(index) && index >= 0) {
+        wordArray[index] = letter;
+      }
+    });
+  });
+
+  // Объединяем массив в строку и возвращаем
+  return wordArray.join('');
 }
 
 /**
